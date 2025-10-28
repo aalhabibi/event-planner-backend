@@ -1,0 +1,24 @@
+{
+	"name": "node-express-starter",
+	"version": "1.0.0",
+	"description": "A Node.js Express starter template with basic setup configuration.",
+	"main": "index.js",
+	"author": "vimode",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"dev": "nodemon src/index.js",
+		"start": "node src/index.js"
+	},
+	"dependencies": {
+		"bcryptjs": "^3.0.2",
+		"cors": "^2.8.5",
+		"dotenv": "^16.6.1",
+		"express": "^4.21.2",
+		"jsonwebtoken": "^9.0.2",
+		"morgan": "^1.10.0"
+	},
+	"devDependencies": {
+		"nodemon": "^3.1.9"
+	}
+}
