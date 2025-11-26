@@ -5,3 +5,4 @@ export const info = (...params) => {
 export const error = (...params) => {
 	console.error(...params);
 };
+ 

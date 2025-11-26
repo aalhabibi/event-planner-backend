@@ -1,4 +1,4 @@
-import "../utils/logger.js";
+import * as logger from "../utils/logger.js";
 import mongoose from "mongoose";
 
 export const unknownEndpoint = (req, res) => {

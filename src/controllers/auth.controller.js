@@ -2,7 +2,6 @@ import { User } from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-
 export const register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
@@ -43,7 +42,9 @@ export const login = async (req, res) => {
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
-    res.json({ token });
+    res.setHeader("Authorization", `Bearer ${token}`);
+
+    res.json({ token, message: `Welcome back, ${user.name}` });
   } catch (err) {
     next(err);
   }

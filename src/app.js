@@ -7,6 +7,7 @@ import { connectDB } from "./config/db.js";
 import * as middleware from "./middleware/error.js";
 import helloRoute from "./routes/helloRouter.js";
 import authRoutes from "./routes/auth.routes.js";
+import eventRoutes from "./routes/event.routes.js";
 
 dotenv.config();
 connectDB();
@@ -17,7 +18,7 @@ const app = express();
 app.use(express.json());
 
 // for x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 
 // enable cors
 app.use(cors());
@@ -34,6 +35,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/hello", helloRoute);
 app.use("/api/auth", authRoutes);
+app.use("/api/events", eventRoutes);
 
 // custom middleware
 app.use(middleware.unknownEndpoint);
