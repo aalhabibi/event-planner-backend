@@ -92,3 +92,18 @@ export const validateSearch = [
     next();
   },
 ];
+
+export const validateUpdateEvent = [
+  param("eventId").isMongoId().withMessage("Valid event ID is required"),
+  body("title").notEmpty().withMessage("Title is required"),
+  body("date").isISO8601().withMessage("Valid date is required (YYYY-MM-DD)"),
+  body("time").notEmpty().withMessage("Time is required"),
+  body("location").notEmpty().withMessage("Location is required"),
+  body("description").optional().isString(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
+    next();
+  },
+];

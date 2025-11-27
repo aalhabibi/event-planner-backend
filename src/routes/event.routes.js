@@ -10,6 +10,7 @@ import {
   getEventAttendees,
   deleteEvent,
   searchEvents,
+  updateEventDetails,
 } from "../controllers/event.controller.js";
 import { authMiddleware } from "../middleware/auth.js";
 import {
@@ -18,6 +19,7 @@ import {
   validateUpdateStatus,
   validateEventId,
   validateSearch,
+  validateUpdateEvent,
 } from "../middleware/validation.js";
 
 const router = express.Router();
@@ -36,6 +38,7 @@ router.get("/search", validateSearch, searchEvents);
 
 // Single event operations
 router.get("/:eventId", validateEventId, getEventById);
+router.put("/:eventId", validateUpdateEvent, updateEventDetails);
 router.post("/:eventId/invite", validateInviteToEvent, inviteToEvent);
 router.patch("/:eventId/status", validateUpdateStatus, updateAttendanceStatus);
 router.get("/:eventId/attendees", validateEventId, getEventAttendees);
