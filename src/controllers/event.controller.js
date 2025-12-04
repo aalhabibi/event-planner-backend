@@ -325,3 +325,43 @@ export const searchEvents = async (req, res, next) => {
     next(err);
   }
 };
+
+// Update event details (organizer only)
+export const updateEventDetails = async (req, res, next) => {
+  try {
+    const { eventId } = req.params;
+    const userId = req.user.id;
+    const { title, description, date, time, location } = req.body;
+
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    // Only organizer can update event details
+    if (event.organizer.toString() !== userId) {
+      return res
+        .status(403)
+        .json({ message: "Only the organizer can update this event" });
+    }
+
+    // Update allowed fields only
+    if (title !== undefined) event.title = title;
+    if (description !== undefined) event.description = description;
+    if (date !== undefined) event.date = date;
+    if (time !== undefined) event.time = time;
+    if (location !== undefined) event.location = location;
+
+    await event.save();
+
+    await event.populate("organizer", "name email");
+    await event.populate("attendees.user", "name email");
+
+    res.json({
+      message: "Event updated successfully",
+      event,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
