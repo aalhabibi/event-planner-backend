@@ -1,5 +1,7 @@
-FROM mongo:6.0
+FROM mongo:7
 
-EXPOSE 27017
+EXPOSE 27015
+
+VOLUME /data/db
 
 CMD ["mongod"]
