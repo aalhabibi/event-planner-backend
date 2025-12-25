@@ -4,4 +4,4 @@ EXPOSE 27015
 
 VOLUME /data/db
 
-CMD ["mongod"]
+CMD ["mongod", "--port", "27015"]

@@ -1,0 +1,77 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: backend
+  namespace: mariamnassar-dev
+spec:
+  source:
+    git:
+      uri: https://github.com/aalhabibi/event-planner-backend
+  strategy:
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+  output:
+    to:
+      kind: ImageStreamTag
+      name: backend:latest
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: backend
+  namespace: mariamnassar-dev
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: mariamnassar-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: image-registry.openshift-image-registry.svc:5000/mariamnassar-dev/backend:latest
+        ports:
+        - containerPort: 3003
+        env:
+        - name: MONGO_URI
+          value: "mongodb://database:27015/event-planner-uni"
+        - name: PORT
+          value: "3003"
+        - name: JWT_SECRET
+          value: "mysecretkey"
+        - name: JWT_EXPIRES_IN
+          value: "1d"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: mariamnassar-dev
+spec:
+  selector:
+    app: backend
+  ports:
+  - port: 3003
+    targetPort: 3003
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: backend
+  namespace: mariamnassar-dev
+spec:
+  to:
+    kind: Service
+    name: backend
+  port:
+    targetPort: 3003
